@@ -15,8 +15,7 @@ class Game:
             horse = Horse(colors[i], horses[colors[i]])
             offset = Point(self.start.x, self.start.y - 3 - (20 * (self._number_of_horses - i)))
             horse.draw_horse(offset, self._win)
-            race.append(horse)
-        print(race)
+            race.append([horse])
 
         # next hint = free
 
@@ -24,8 +23,16 @@ class Game:
             # for all horses move 1-6 spaces in order of leader ->
             # track horse order and location of each turn
             # if a horse crosses finish line, end game and snapshot order
-        
-        pass
+        race_in_progress = True
+        while race_in_progress:
+            for racer_index in range(len(race)):
+                horse = race[racer_index][0]
+                horse.move()
+                self.draw_move(horse)
+                race[racer_index].append(horse._position)
+                if horse._position > self._num_spaces:
+                    race_in_progress = False
+        print(race)
 
     def draw_track(self):
         # draw a line for the track
@@ -53,3 +60,5 @@ class Game:
             else: 
                 self._win.draw_line(space_tick)
 
+    def draw_move(self, horse):
+        pass

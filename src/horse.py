@@ -6,15 +6,22 @@ class Horse:
         self._name = name
         self._color = color
         self._position = 0
+        self._exhaust = False
         self.image = None
     
     def __repr__(self):
-        return f"Horse({self._color, self._name})"
+        return f"{self._color} horse -> {self._name}"
         
 
     def move(self):
         num = random.randint(1, 6)
-        print(f"{self._name} moved {num} spaces")
+        if self._exhaust:
+            num = 0
+            print(f"Double 6's! {self._name} stumbled from exhaustion and moves 0.")
+        if num == 6:
+            self._exhaust = True
+        else:
+            self._exhaust = False
         self._position += num
 
     def draw_horse(self, point, window=None):

@@ -9,11 +9,11 @@ def main():
     win = Window(width, height)
 
     # Game Parameters
-    number_of_horses = 2 # 1 - 6. Default = 6
+    number_of_horses = 6 # 1 - 6. Default = 6
     spaces = 20 # Tested with 20
     game = Game(number_of_horses, spaces, win)
     
-    # Name Your Horses!
+    # Name Your Horses! #color : horse, in order of their rendering. 
     horses = {
         "blue" : "Stormy Symphony",
         "green" : "Whispering Meadow",
