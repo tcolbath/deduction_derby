@@ -3,8 +3,9 @@ from game import Game
 
 def main():
     print("Work in progress....")
-    win = Window(1280, 720, "light gray")
-    game = Game(6, 20, win)
+    win = Window(1280, 720)
+    game = Game(2, 20, win)
+    game.new_game()
 
     win.wait_for_close()
 
