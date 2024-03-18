@@ -2,11 +2,14 @@ from graphics import Window, Point
 import random
 
 class Horse:
-    def __init__(self, name="bob", color="blue", window=None):
+    def __init__(self, color="blue", name="bob", window=None):
         self._name = name
         self._color = color
         self._position = 0
         self.image = None
+    
+    def __repr__(self):
+        return f"Horse({self._color, self._name})"
         
 
     def move(self):
@@ -20,8 +23,20 @@ class Horse:
         if self._win == None:
             return
         if self._color == "blue":
-            print("should be loading a blue horse")
-            self.image = self._win.draw_image(self.point, "./horses/blue_horse.gif")
+            print(f"{self._name} placed at start")
+            self.image = self._win.draw_image(self.point, "./horses/blue_horse.png")
+        if self._color == "green":
+            print(f"{self._name} placed at start")
+            self.image = self._win.draw_image(self.point, "./horses/green_horse.png")
+        if self._color == "orange":
+            print(f"{self._name} placed at start")
+            self.image = self._win.draw_image(self.point, "./horses/orange_horse.png")
+        if self._color == "purple":
+            print(f"{self._name} placed at start")
+            self.image = self._win.draw_image(self.point, "./horses/purple_horse.png")
         if self._color == "red":
-            print("should be loading a red horse")
-            self.image = self._win.draw_image(self.point, "./horses/red_horse.gif")
+            print(f"{self._name} placed at start")
+            self.image = self._win.draw_image(self.point, "./horses/red_horse.png")
+        if self._color == "yellow":
+            print(f"{self._name} placed at start")
+            self.image = self._win.draw_image(self.point, "./horses/yellow_horse.png")

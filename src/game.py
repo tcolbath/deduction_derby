@@ -8,12 +8,15 @@ class Game:
         self._win = window
         self.draw_track()
 
-    def new_game(self):
-        horses = [Horse(color="blue"), Horse(color="red")]
+    def new_game(self, horses):
+        colors = list(horses.keys())
+        race = []
         for i in range(self._number_of_horses):
-            offset = Point(self.start.x, self.start.y - 3 - (20* i))
-            horses[i].draw_horse(offset, self._win)
-            print(horses[i]._color)
+            horse = Horse(colors[i], horses[colors[i]])
+            offset = Point(self.start.x, self.start.y - 3 - (20 * (self._number_of_horses - i)))
+            horse.draw_horse(offset, self._win)
+            race.append(horse)
+        print(race)
 
         # next hint = free
 

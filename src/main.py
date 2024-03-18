@@ -3,10 +3,26 @@ from game import Game
 
 def main():
     print("Work in progress....")
-    win = Window(1280, 720)
-    game = Game(2, 20, win)
-    game.new_game()
+    # Window Parameters (16:9)
+    width = 1280
+    height = 720
+    win = Window(width, height)
 
+    # Game Parameters
+    number_of_horses = 2 # 1 - 6. Default = 6
+    spaces = 20 # Tested with 20
+    game = Game(number_of_horses, spaces, win)
+    
+    # Name Your Horses!
+    horses = {
+        "blue" : "Stormy Symphony",
+        "green" : "Whispering Meadow",
+        "orange" : "Golden Gallop",
+        "purple" : "Mystic Dreamer",
+        "red" : "Firestorm",
+        "yellow" : "Thunderhoof",
+    }
+    game.new_game(horses)
     win.wait_for_close()
 
 

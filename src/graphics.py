@@ -34,7 +34,6 @@ class Window:
     def draw_image(self, point, file_name):
         x = point.x
         y = point.y
-        print("attempting to render image")
         image = ImageTk.PhotoImage(Image.open(file_name))
         self.images.append(image)
         return self.canvas.create_image(x, y, anchor=SW, image=image)
