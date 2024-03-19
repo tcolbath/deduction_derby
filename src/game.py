@@ -7,8 +7,10 @@ class Game:
         self._num_spaces = num_spaces
         self._win = window
         self.draw_track()
-
+        
     def new_game(self, horses):
+        self.clear_race_log()
+        self._num_turns = 0
         colors = list(horses.keys())
         racers = []
 
@@ -61,12 +63,11 @@ class Game:
     def rig_race(self, racers):
         # for all horses move 1-6 spaces in order of leader ->
         # track horse order and location of each turn
-
         crossed_the_line = []
         self.rig_race_r(racers, crossed_the_line)
-        self.get_results(crossed_the_line)
 
     def rig_race_r(self, racers, crossed_the_line):
+        self._num_turns += 1
         for racer in racers:
             if range(len(racers)) == 0:
                 return
@@ -76,9 +77,12 @@ class Game:
                 racer._position = self._num_spaces + 1
                 crossed_the_line.append(racer)
                 racers.remove(racer)
+        self.race_log(racers, crossed_the_line)
+        # play another turn if active racers left
         if len(racers) > 0:
-            self.get_roll_order(racers)
+            racers = self.get_roll_order(racers)
             self.rig_race_r(racers, crossed_the_line)
+
 
     def get_roll_order(self, racers):
         leader = 0
@@ -100,3 +104,22 @@ class Game:
         roll_order.extend(racers[leader_index:])
         roll_order.extend(racers[0:leader_index])
         return roll_order
+    
+
+    def race_log(self, racers, crossed_the_line):
+        with open("race_log.txt", "a") as race_log:
+            race_log.write(f"\nTurn {self._num_turns}:\n")
+            for racer in racers:
+                if racer._last_roll == 0:
+                    race_log.write(f"{racer._color} stumbled! Still at {racer._position}\n")
+                else:
+                    race_log.write(f"{racer._color} rolled a {racer._last_roll}.  Now at {racer._position}\n")
+            if len(crossed_the_line) > 0:
+                for racer in crossed_the_line:
+                    race_log.write(f"{racer._color}, ")
+                race_log.write("have crossed the finish line!\n")
+
+
+    def clear_race_log(self):
+        with open("race_log.txt", "w") as race_log:
+            race_log.write("Deduction Derby\n")
