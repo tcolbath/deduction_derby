@@ -17,16 +17,15 @@ class Horse:
         
 
     def move(self):
-        num = random.randint(1, 6)
+        self._last_roll = random.randint(1, 6)
         if self._exhaust:
-            num = 0
-            print(f"Double 6's! {self._name} stumbled from exhaustion and moves 0.")
-        if num == 6:
+            self._last_roll = 0
+        if self._last_roll == 6:
             self._exhaust = True
         else:
             self._exhaust = False
-        self._position += num
-        return num
+        self._position += self._last_roll
+        return self._last_roll
 
     def draw_horse(self, point, window=None):
         self.point = point

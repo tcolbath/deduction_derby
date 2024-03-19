@@ -18,22 +18,12 @@ class Game:
             offset = Point(self.start.x, self.start.y - (25 * (self._number_of_horses - i)) + 15)
             horse.draw_horse(offset, self._win)
             racers.append(horse)
-        
-        
+          
         # next hint = free
 
         # calculate all turns of game
-            # for all horses move 1-6 spaces in order of leader ->
-            # track horse order and location of each turn
-            # if a horse crosses finish line, end game and snapshot order
-        race_in_progress = True
-        while race_in_progress:
-            for racer in racers:
-                num = racer.move()
-                if racer._position > self._num_spaces:
-                    race_in_progress = False
-                racer._rolls.append(num)
-        self.get_results(racers)
+        self.rig_race(racers)
+
 
     def draw_track(self):
         # draw a line for the track
@@ -66,12 +56,47 @@ class Game:
 
     def get_results(self, racers):
         for racer in racers:
-            print(f"{racer._color}\t {racer._rolls}\t {racer._position}")
+            print(f"{racer._color}\t {racer._rolls}")
         
-
     def rig_race(self, racers):
-        for racer in racers:
-            racer.move()
+        # for all horses move 1-6 spaces in order of leader ->
+        # track horse order and location of each turn
 
-        
-            
+        crossed_the_line = []
+        self.rig_race_r(racers, crossed_the_line)
+        self.get_results(crossed_the_line)
+
+    def rig_race_r(self, racers, crossed_the_line):
+        for racer in racers:
+            if range(len(racers)) == 0:
+                return
+            num = racer.move()
+            racer._rolls.append(num)
+            if racer._position > self._num_spaces:
+                racer._position = self._num_spaces + 1
+                crossed_the_line.append(racer)
+                racers.remove(racer)
+        if len(racers) > 0:
+            self.get_roll_order(racers)
+            self.rig_race_r(racers, crossed_the_line)
+
+    def get_roll_order(self, racers):
+        leader = 0
+        leader_last_roll = 0
+        leader_index = 0
+
+        for i in range(len(racers)):
+            racer = racers[i] 
+            if racer._position > leader:
+                leader = racer._position
+                leader_last_roll = racer._last_roll
+                leader_index = i
+            if racer._position == leader:
+                if racer._last_roll > leader_last_roll:
+                    leader_last_roll = racer._last_roll
+                    leader_index = i
+
+        roll_order = []
+        roll_order.extend(racers[leader_index:])
+        roll_order.extend(racers[0:leader_index])
+        return roll_order
