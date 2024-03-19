@@ -17,8 +17,9 @@ class Game:
         # Creates the horses, draws them at start and starts a list for each horse
         for i in range(self._number_of_horses):
             horse = Horse(colors[i], horses[colors[i]])
-            offset = Point(self.start.x, self.start.y - (25 * (self._number_of_horses - i)) + 15)
-            horse.draw_horse(offset, self._win)
+            if self._win is not None:
+                offset = Point(self.start.x, self.start.y - (25 * (self._number_of_horses - i)) + 15)
+                horse.draw_horse(offset, self._win)
             racers.append(horse)
           
         # next hint = free
@@ -115,8 +116,10 @@ class Game:
                 else:
                     race_log.write(f"{racer._color} rolled a {racer._last_roll}.  Now at {racer._position}\n")
             if len(crossed_the_line) > 0:
+                place = 1
                 for racer in crossed_the_line:
-                    race_log.write(f"{racer._color}, ")
+                    race_log.write(f"{place}. {racer._color}, ") 
+                    place += 1
                 race_log.write("have crossed the finish line!\n")
 
 

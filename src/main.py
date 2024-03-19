@@ -6,7 +6,7 @@ def main():
     # Window Parameters (16:9)
     width = 1280
     height = 720
-    win = Window(width, height)
+    win = None
 
     # Game Parameters
     number_of_horses = 6 # 1 - 6. Default = 6
@@ -22,8 +22,11 @@ def main():
         "red" : "Firestorm",
         "yellow" : "Thunderhoof",
     }
+    
+    
     game.new_game(horses)
-    win.wait_for_close()
+    if win is not None:
+        win.wait_for_close()
 
 
 main()
