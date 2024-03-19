@@ -10,13 +10,16 @@ class Game:
 
     def new_game(self, horses):
         colors = list(horses.keys())
-        race = []
+        racers = []
+
+        # Creates the horses, draws them at start and starts a list for each horse
         for i in range(self._number_of_horses):
             horse = Horse(colors[i], horses[colors[i]])
-            offset = Point(self.start.x, self.start.y - 3 - (20 * (self._number_of_horses - i)))
+            offset = Point(self.start.x, self.start.y - (25 * (self._number_of_horses - i)) + 15)
             horse.draw_horse(offset, self._win)
-            race.append([horse])
-
+            racers.append(horse)
+        
+        
         # next hint = free
 
         # calculate all turns of game
@@ -25,14 +28,12 @@ class Game:
             # if a horse crosses finish line, end game and snapshot order
         race_in_progress = True
         while race_in_progress:
-            for racer_index in range(len(race)):
-                horse = race[racer_index][0]
-                horse.move()
-                self.draw_move(horse)
-                race[racer_index].append(horse._position)
-                if horse._position > self._num_spaces:
+            for racer in racers:
+                num = racer.move()
+                if racer._position > self._num_spaces:
                     race_in_progress = False
-        print(race)
+                racer._rolls.append(num)
+        self.get_results(racers)
 
     def draw_track(self):
         # draw a line for the track
@@ -62,3 +63,15 @@ class Game:
 
     def draw_move(self, horse):
         pass
+
+    def get_results(self, racers):
+        for racer in racers:
+            print(f"{racer._color}\t {racer._rolls}\t {racer._position}")
+        
+
+    def rig_race(self, racers):
+        for racer in racers:
+            racer.move()
+
+        
+            
