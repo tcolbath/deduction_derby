@@ -1,5 +1,6 @@
 from graphics import Window
 from game import Game
+import random
 
 def main():
     print("Work in progress....")
@@ -8,7 +9,7 @@ def main():
     height = 720
     win = None
     
-
+    random.seed(11)
     # Game Parameters
     number_of_horses = 6 # 1 - 6. Default = 6
     spaces = 20 # Tested with 20

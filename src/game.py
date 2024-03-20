@@ -29,8 +29,8 @@ class Game:
         # next hint = free
 
         # calculate all turns of game
-        self.rig_race(racers)
-
+        results = self.rig_race(racers)
+        results_to_console(results)
 
     def draw_track(self):
         # draw a line for the track
@@ -61,31 +61,30 @@ class Game:
 
     def draw_move(self, horse):
         pass
-
-
-    def get_results(self, racers):
-        for racer in racers:
-            print(f"{racer._color}\t {racer._rolls}")
-        
+     
 
     def rig_race(self, racers):
         # for all horses move 1-6 spaces in order of leader ->
         # track horse order and location of each turn
         crossed_the_line = []
         self.rig_race_r(racers, crossed_the_line)
+        return crossed_the_line
 
 
     def rig_race_r(self, racers, crossed_the_line):
         self._num_turns += 1
+        racers_to_remove = []
         for racer in racers:
             if range(len(racers)) == 0:
                 return
             num = racer.move()
-            racer._rolls.append(num)
             if racer.position > self._num_spaces:
                 racer.position = self._num_spaces + 1
                 crossed_the_line.append(racer)
-                racers.remove(racer)
+                racers_to_remove.append(racer)
+            racer._rolls.append(num)
+            racer._positions.append(racer.position)
+        racers = list(filter(lambda racer: racer not in racers_to_remove, racers))
         if self.game_logs == True:
             race_log(self._num_turns, racers, crossed_the_line)
         # play another turn if active racers left
@@ -134,3 +133,10 @@ def race_log(turn, racers, crossed_the_line):
 def clear_race_log():
     with open("./data/race_log.txt", "w") as race_log:
         race_log.write("Deduction Derby -- Race Log\n")
+
+
+def results_to_console(results):
+    for racer in results:
+        print(f"{racer._color}\t {racer._rolls}\t\t {racer._positions}")
+
+
