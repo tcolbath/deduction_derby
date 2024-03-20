@@ -1,4 +1,4 @@
 __pycache__/
 test.py
-race_log.txt
-/src/race_log.txt
+data/race_log.txt
+data/bid_log.txt

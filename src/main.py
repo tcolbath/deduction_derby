@@ -12,7 +12,8 @@ def main():
     # Game Parameters
     number_of_horses = 6 # 1 - 6. Default = 6
     spaces = 20 # Tested with 20
-    game = Game(number_of_horses, spaces, win)
+    game_logs = True
+    game = Game(number_of_horses, spaces, win, game_logs)
     
     # Name Your Horses! color : horse, in order of their rendering. 
     horses = {

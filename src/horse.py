@@ -5,13 +5,15 @@ class Horse:
     def __init__(self, color="blue", name="bob", window=None):
         self._name = name
         self._color = color
-        self._position = 0
-        self._exhaust = False
         self.image = None
+
+        self.position = 0
+        self._exhaust = False
         self._rolls = []
+        self._positions = []
+        self._total_bids = 0
 
 
-    
     def __repr__(self):
         return f"Horse, {self._color}\t:"
         
@@ -24,7 +26,7 @@ class Horse:
             self._exhaust = True
         else:
             self._exhaust = False
-        self._position += self._last_roll
+        self.position += self._last_roll
         return self._last_roll
 
     def draw_horse(self, point, window=None):

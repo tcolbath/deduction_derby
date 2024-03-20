@@ -1,15 +1,19 @@
 from graphics import Window, Point, Line
 from horse import Horse
+from player import bid_log, clear_bid_log
 
 class Game:
-    def __init__(self, number_of_horses, num_spaces, window="None"):
+    def __init__(self, number_of_horses, num_spaces, window="None", game_logs="False"):
         self._number_of_horses = number_of_horses
         self._num_spaces = num_spaces
         self._win = window
         self.draw_track()
+        self.game_logs = game_logs
         
     def new_game(self, horses):
-        self.clear_race_log()
+        if self.game_logs == True:
+            clear_race_log()
+            clear_bid_log()
         self._num_turns = 0
         colors = list(horses.keys())
         racers = []
@@ -54,18 +58,22 @@ class Game:
             else: 
                 self._win.draw_line(space_tick)
 
+
     def draw_move(self, horse):
         pass
+
 
     def get_results(self, racers):
         for racer in racers:
             print(f"{racer._color}\t {racer._rolls}")
         
+
     def rig_race(self, racers):
         # for all horses move 1-6 spaces in order of leader ->
         # track horse order and location of each turn
         crossed_the_line = []
         self.rig_race_r(racers, crossed_the_line)
+
 
     def rig_race_r(self, racers, crossed_the_line):
         self._num_turns += 1
@@ -74,11 +82,12 @@ class Game:
                 return
             num = racer.move()
             racer._rolls.append(num)
-            if racer._position > self._num_spaces:
-                racer._position = self._num_spaces + 1
+            if racer.position > self._num_spaces:
+                racer.position = self._num_spaces + 1
                 crossed_the_line.append(racer)
                 racers.remove(racer)
-        self.race_log(racers, crossed_the_line)
+        if self.game_logs == True:
+            race_log(self._num_turns, racers, crossed_the_line)
         # play another turn if active racers left
         if len(racers) > 0:
             racers = self.get_roll_order(racers)
@@ -92,11 +101,11 @@ class Game:
 
         for i in range(len(racers)):
             racer = racers[i] 
-            if racer._position > leader:
-                leader = racer._position
+            if racer.position > leader:
+                leader = racer.position
                 leader_last_roll = racer._last_roll
                 leader_index = i
-            if racer._position == leader:
+            if racer.position == leader:
                 if racer._last_roll > leader_last_roll:
                     leader_last_roll = racer._last_roll
                     leader_index = i
@@ -107,22 +116,21 @@ class Game:
         return roll_order
     
 
-    def race_log(self, racers, crossed_the_line):
-        with open("race_log.txt", "a") as race_log:
-            race_log.write(f"\nTurn {self._num_turns}:\n")
-            for racer in racers:
-                if racer._last_roll == 0:
-                    race_log.write(f"{racer._color} stumbled! Still at {racer._position}\n")
-                else:
-                    race_log.write(f"{racer._color} rolled a {racer._last_roll}.  Now at {racer._position}\n")
-            if len(crossed_the_line) > 0:
-                place = 1
-                for racer in crossed_the_line:
-                    race_log.write(f"{place}. {racer._color}, ") 
-                    place += 1
-                race_log.write("have crossed the finish line!\n")
+def race_log(turn, racers, crossed_the_line):
+    with open("./data/race_log.txt", "a") as race_log:
+        race_log.write(f"\nTurn {turn}:\n")
+        for racer in racers:
+            if racer._last_roll == 0:
+                race_log.write(f"{racer._color} stumbled! Still at {racer.position}\n")
+            else:
+                race_log.write(f"{racer._color} rolled a {racer._last_roll}.  Now at {racer.position}\n")
+        if len(crossed_the_line) > 0:
+            place = 1
+            for racer in crossed_the_line:
+                race_log.write(f"{place}. {racer._color}, ") 
+                place += 1
+            race_log.write("have crossed the finish line!\n")
 
-
-    def clear_race_log(self):
-        with open("race_log.txt", "w") as race_log:
-            race_log.write("Deduction Derby\n")
+def clear_race_log():
+    with open("./data/race_log.txt", "w") as race_log:
+        race_log.write("Deduction Derby -- Race Log\n")
