@@ -33,14 +33,14 @@ class Horse:
         if self._win == None:
             return
         if self._color == "blue":
-            self.image = self._win.draw_image(self.point, "./horses/blue_horse.png")
+            self.image = self._win.draw_image(self.point, "./data/horses/blue_horse.png")
         if self._color == "green":          
-            self.image = self._win.draw_image(self.point, "./horses/green_horse.png")
+            self.image = self._win.draw_image(self.point, "./data/horses/green_horse.png")
         if self._color == "orange":
-            self.image = self._win.draw_image(self.point, "./horses/orange_horse.png")
+            self.image = self._win.draw_image(self.point, "./data/horses/orange_horse.png")
         if self._color == "purple":
-            self.image = self._win.draw_image(self.point, "./horses/purple_horse.png")
+            self.image = self._win.draw_image(self.point, "./data/horses/purple_horse.png")
         if self._color == "red":
-            self.image = self._win.draw_image(self.point, "./horses/red_horse.png")
+            self.image = self._win.draw_image(self.point, "./data/horses/red_horse.png")
         if self._color == "yellow":
-            self.image = self._win.draw_image(self.point, "./horses/yellow_horse.png")
+            self.image = self._win.draw_image(self.point, "./data/horses/yellow_horse.png")

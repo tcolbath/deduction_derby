@@ -7,20 +7,21 @@ def main():
     width = 1280
     height = 720
     win = None
+    
 
     # Game Parameters
     number_of_horses = 6 # 1 - 6. Default = 6
     spaces = 20 # Tested with 20
     game = Game(number_of_horses, spaces, win)
     
-    # Name Your Horses! #color : horse, in order of their rendering. 
+    # Name Your Horses! color : horse, in order of their rendering. 
     horses = {
-        "blue" : "Stormy Symphony",
-        "green" : "Whispering Meadow",
-        "orange" : "Golden Gallop",
-        "purple" : "Mystic Dreamer",
         "red" : "Firestorm",
+        "orange" : "Golden Gallop",
         "yellow" : "Thunderhoof",
+        "green" : "Whispering Meadow",
+        "blue" : "Stormy Symphony",
+        "purple" : "Mystic Dreamer",
     }
     
     
