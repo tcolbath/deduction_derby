@@ -1,5 +1,5 @@
 from graphics import Window
-from game import Game
+from game import Game, results_to_console
 import random
 
 def main():
@@ -27,6 +27,7 @@ def main():
     
     
     game.new_game(horses)
+    
     if win is not None:
         win.wait_for_close()
 

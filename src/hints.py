@@ -1,31 +1,31 @@
 import random
 
 
-class Hint:
-    index = -1
-    possible_text = [
-        "this is a good hint",
-        "this is another good hint",
-        "hint 3",
-        "hint 4"
-    ]
-
+class HintDeck:
     def __init__(self, results):
-        self._text = self.assign_text()
+        self._results = results
+        self._index = 0
+        self._given_hints = []
+        self._possible_text = [
+            f"{self._results[0]} came in first"
+        ]
 
-    def __repr__(self):
-        return f"Hint: {self._text}"
+
+    def shuffle_deck(self):
+        random.shuffle(self._possible_text)
     
 
-    def calculate_cost(self):
-        pass
+    def draw(self):
+        if self._index < len(self._possible_text):
+            self._given_hints.append(Hint(self._index, self._possible_text[self._index]))
+    
+    
+class Hint(HintDeck):
+    def __init__(self, index, text):
+        self._hint_num = index
+        self._text = text
 
-    def assign_text(self):
-        if Hint.index < len(Hint.possible_text):
-            Hint.index += 1
-            return Hint.possible_text[Hint.index]
 
-    @classmethod
-    def shuffle_deck(cls):
-        random.shuffle(cls.possible_text)
+    def __repr__(self):
+        return f"Hint('{self._text}')"
 

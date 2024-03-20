@@ -1,7 +1,7 @@
 from graphics import Point, Line
 from horse import Horse
 from player import clear_bid_log
-from hints import Hint
+from hints import HintDeck, Hint
 
 class Game:
     def __init__(self, number_of_horses, num_spaces, window="None", game_logs="False"):
@@ -10,7 +10,6 @@ class Game:
         self._win = window
         self.draw_track()
         self.game_logs = game_logs
-        self._hints = []
         
     def new_game(self, horses):
         if self.game_logs == True:
@@ -30,13 +29,13 @@ class Game:
           
 
         # calculate all turns of game
-        self.results = self.rig_race(racers)
+        self._results = self.rig_race(racers)
 
         # first hint is free
-        Hint.shuffle_deck()
-        self.draw_hint()
-
-        results_to_console(self.results, self._hints)
+        hint_deck = HintDeck(self._results)
+        hint_deck.shuffle_deck()
+        hint_deck.draw()
+        results_to_console(self._results, hint_deck._given_hints)
 
     def draw_track(self):
         # draw a line for the track
@@ -120,9 +119,6 @@ class Game:
         roll_order.extend(racers[0:leader_index])
         return roll_order
     
-
-    def draw_hint(self):
-        self._hints.append(Hint(self.results))
 
 def race_log(turn, racers, crossed_the_line):
     with open("./data/race_log.txt", "a") as race_log:
