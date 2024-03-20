@@ -35,6 +35,9 @@ class Game:
         hint_deck = HintDeck(self._results)
         hint_deck.shuffle_deck()
         hint_deck.draw()
+        hint_deck.draw()
+        hint_deck.draw()
+        hint_deck.draw()
         results_to_console(self._results, hint_deck._given_hints)
 
     def draw_track(self):

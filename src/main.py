@@ -25,7 +25,6 @@ def main():
         "purple" : "Mystic Dreamer",
     }
     
-    
     game.new_game(horses)
     
     if win is not None:
