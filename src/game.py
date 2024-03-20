@@ -27,18 +27,38 @@ class Game:
                 horse.draw_horse(offset, self._win)
             racers.append(horse)
           
-
         # calculate all turns of game
         self._results = self.rig_race(racers)
 
         # first hint is free
-        hint_deck = HintDeck(self._results)
-        hint_deck.shuffle_deck()
-        hint_deck.draw()
-        hint_deck.draw()
-        hint_deck.draw()
-        hint_deck.draw()
-        results_to_console(self._results, hint_deck._given_hints)
+        self.hints = HintDeck(self._results)
+        self.hints.shuffle_deck()
+        self.hints.draw()
+
+    def real_time_race(self):
+        # Pre-game, display first hint and allow purchase of hints and placement of bids.
+        print("Prerace: ")
+        print(self.hints._given_hints)
+        input()
+
+        racers = [x for x in self._results]
+        crossed_the_line = []
+        # Each turn display one series of rolls -> positon and allow more hints and bids. 
+        # !!!!!(currently always in order of winner)
+        for turn in range(self._num_turns):
+            print(f"Turn: {turn + 1}")
+            i = 0
+            for racer in racers:
+                print(f"{racer._color}\t{racer._rolls[turn]} -> {racer._positions[turn]}")
+                i += 1
+                if racer._positions[turn] > self._num_spaces:
+                    crossed_the_line.append(racer)
+                    print(f"{racer._color} has finished the race in {len(crossed_the_line)} place!")
+            
+            racers = list(filter(lambda racer: racer not in crossed_the_line, racers))
+
+            # bids or hint purchase
+            input()
 
     def draw_track(self):
         # draw a line for the track
@@ -144,9 +164,8 @@ def clear_race_log():
         race_log.write("Deduction Derby -- Race Log\n")
 
 
-def results_to_console(results, hints):
+def results_to_console(results):
     for racer in results:
         print(f"{racer._color}\t {racer._rolls}\t\t {racer._positions}")
-    print(hints)
 
 

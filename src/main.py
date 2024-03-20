@@ -3,7 +3,7 @@ from game import Game, results_to_console
 import random
 
 def main():
-    print("Work in progress....")
+    print("Loading game...")
     # Window Parameters (16:9)
     width = 1280
     height = 720
@@ -26,6 +26,9 @@ def main():
     }
     
     game.new_game(horses)
+    game.real_time_race()
+
+    results_to_console(game._results)
     
     if win is not None:
         win.wait_for_close()
