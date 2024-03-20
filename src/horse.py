@@ -7,7 +7,8 @@ class Horse:
         self._color = color
         self.image = None
 
-        self.position = 0
+        self._position = 0
+        self._last_roll = 0
         self._exhaust = False
         self._rolls = []
         self._positions = []
@@ -26,8 +27,9 @@ class Horse:
             self._exhaust = True
         else:
             self._exhaust = False
-        self.position += self._last_roll
+        self._position += self._last_roll
         return self._last_roll
+
 
     def draw_horse(self, point, window=None):
         self.point = point

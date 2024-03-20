@@ -1,6 +1,7 @@
-from graphics import Window, Point, Line
+from graphics import Point, Line
 from horse import Horse
-from player import bid_log, clear_bid_log
+from player import clear_bid_log
+from hints import Hint
 
 class Game:
     def __init__(self, number_of_horses, num_spaces, window="None", game_logs="False"):
@@ -9,6 +10,7 @@ class Game:
         self._win = window
         self.draw_track()
         self.game_logs = game_logs
+        self._hints = []
         
     def new_game(self, horses):
         if self.game_logs == True:
@@ -26,11 +28,15 @@ class Game:
                 horse.draw_horse(offset, self._win)
             racers.append(horse)
           
-        # next hint = free
 
         # calculate all turns of game
-        results = self.rig_race(racers)
-        results_to_console(results)
+        self.results = self.rig_race(racers)
+
+        # first hint is free
+        Hint.shuffle_deck()
+        self.draw_hint()
+
+        results_to_console(self.results, self._hints)
 
     def draw_track(self):
         # draw a line for the track
@@ -78,12 +84,12 @@ class Game:
             if range(len(racers)) == 0:
                 return
             num = racer.move()
-            if racer.position > self._num_spaces:
-                racer.position = self._num_spaces + 1
+            if racer._position > self._num_spaces:
+                racer._position = self._num_spaces + 1
                 crossed_the_line.append(racer)
                 racers_to_remove.append(racer)
             racer._rolls.append(num)
-            racer._positions.append(racer.position)
+            racer._positions.append(racer._position)
         racers = list(filter(lambda racer: racer not in racers_to_remove, racers))
         if self.game_logs == True:
             race_log(self._num_turns, racers, crossed_the_line)
@@ -100,11 +106,11 @@ class Game:
 
         for i in range(len(racers)):
             racer = racers[i] 
-            if racer.position > leader:
-                leader = racer.position
+            if racer._position > leader:
+                leader = racer._position
                 leader_last_roll = racer._last_roll
                 leader_index = i
-            if racer.position == leader:
+            if racer._position == leader:
                 if racer._last_roll > leader_last_roll:
                     leader_last_roll = racer._last_roll
                     leader_index = i
@@ -115,14 +121,17 @@ class Game:
         return roll_order
     
 
+    def draw_hint(self):
+        self._hints.append(Hint(self.results))
+
 def race_log(turn, racers, crossed_the_line):
     with open("./data/race_log.txt", "a") as race_log:
         race_log.write(f"\nTurn {turn}:\n")
         for racer in racers:
             if racer._last_roll == 0:
-                race_log.write(f"{racer._color} stumbled! Still at {racer.position}\n")
+                race_log.write(f"{racer._color} stumbled! Still at {racer._position}\n")
             else:
-                race_log.write(f"{racer._color} rolled a {racer._last_roll}.  Now at {racer.position}\n")
+                race_log.write(f"{racer._color} rolled a {racer._last_roll}.  Now at {racer._position}\n")
         if len(crossed_the_line) > 0:
             place = 1
             for racer in crossed_the_line:
@@ -130,13 +139,15 @@ def race_log(turn, racers, crossed_the_line):
                 place += 1
             race_log.write("have crossed the finish line!\n")
 
+
 def clear_race_log():
     with open("./data/race_log.txt", "w") as race_log:
         race_log.write("Deduction Derby -- Race Log\n")
 
 
-def results_to_console(results):
+def results_to_console(results, hints):
     for racer in results:
         print(f"{racer._color}\t {racer._rolls}\t\t {racer._positions}")
+    print(hints)
 
 
